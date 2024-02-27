@@ -10,7 +10,7 @@ const Navbar = () => {
     const [toggle, setToggle] = useState(false);
     return (
         <nav className={
-            `px-6 w-full flex items-center py-5 fixed bg-primary top-0 z-1 text-slate-800`
+            `px-6 w-full flex items-center py-5 fixed bg-gray-900 text-white top-0 z-1 text-slate-800`
         }>
             <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
                 <NavLink

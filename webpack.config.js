@@ -38,7 +38,7 @@ module.exports = (_, argv) => ({
       },
       ,
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|glb)$/i,
         type: 'asset/resource'
       }
     ],
