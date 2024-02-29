@@ -2,9 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 
 import earth from "../../assets/3d/stylized_planet.glb";
-import { useFrame, useThree } from "@react-three/fiber";
+import { act, useFrame, useThree } from "@react-three/fiber";
+import * as THREE from 'three';
 
 const Earth = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
+    const group = useRef();
+    const { nodes, materials, animations } = useGLTF(earth);
+    const { actions } = useAnimations(animations, group);
     const {gl, viewport} = useThree();
     const lastX = useRef(0);
     const rotationSpeed = useRef(0);
@@ -53,24 +57,9 @@ const Earth = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
 
             //ensure te rotation value remains in a specific range to prevent positional issues or negative rotational values
             const normalizedRotation = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-
-            switch (true) {
-              case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
-                setCurrentStage(4);
-                break;
-              case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
-                setCurrentStage(3);
-                break;
-              case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
-                setCurrentStage(2);
-                break;
-              case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
-                setCurrentStage(1);
-                break;
-            
-              default:
-                break;
-            }
+            const segmentSize = 2 * Math.PI / 3;
+            const segmentIndex = parseInt(normalizedRotation / segmentSize)
+            setCurrentStage(segmentIndex+1);
         }
     })
 
@@ -88,9 +77,6 @@ const Earth = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
 
     }, [gl, handlePointerDown, handlePointerUp, handlePointerMove]);
 
-  const group = useRef();
-  const { nodes, materials, animations } = useGLTF(earth);
-  const { actions } = useAnimations(animations, group);
   return (
     <group ref={group} {...props} dispose={null}>
       <group>
