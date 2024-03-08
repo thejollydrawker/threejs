@@ -16,10 +16,11 @@ const Home = () => {
     const adjustPlanetForScreenSize = () => {
         let screenScale: number[];
         let screenPosition = [0, -0.5, 1];
-        const rotation = [0, 0.6, 0.4]
+        const rotation = [0, 0.6, 0.4];
 
         if (window.innerWidth < BREAKPOINT) {
             screenScale = [1.25, 1.25, 1.25];
+            screenPosition = [0, -1.5, 1];
         } else
             screenScale = [1.8, 1.8, 1.8];
 
@@ -56,7 +57,7 @@ const Home = () => {
             }  
         }
 
-        return 'top-20 left-0 right-0 mx-8';
+        return 'top-[40%] left-0 right-0 mx-8 max-w-32';
     }
 
     useEffect(() => {
@@ -87,7 +88,7 @@ const Home = () => {
     const [planetScale, planetPosition, planetRotation] = adjustPlanetForScreenSize();
 
     return (
-        <section className="h-screen w-full bg-slate-900">
+        <section className="h-screen w-full canvas-container">
             <Canvas
                 className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}`}
                 camera={{near: 0.1, far: 1000}}
@@ -107,11 +108,11 @@ const Home = () => {
                     />
                 </Suspense>
             </Canvas>
-            <div className={`absolute ${getPopupPosition()} z-1 p-5 rounded-md cursor-normal text-md tracking-wide flex items-center justify-center md:max-w-[25%] bg-gradient-to-t from-indigo-700/50 to-violet-500/50`}>
+            <div className={`absolute ${getPopupPosition()} p-5 rounded-md cursor-normal text-md tracking-wide flex items-center justify-center md:max-w-[25%] bg-gradient-to-t from-indigo-700 to-violet-500/70`}>
                 {currentStage && <Popup currentStage={currentStage} />}
             </div>
             
-            {tooltipVisible && <div className={`absolute ${getTooltipPosition()}`}><Tooltip orientation={ currentStage !== 3 ? 'right' : 'left' }/></div>}
+            {tooltipVisible && <div className={`absolute ${getTooltipPosition()}`}><Tooltip orientation={ currentStage !== 3 && window.innerWidth > BREAKPOINT ? 'right' : 'left' }/></div>}
         </section>
     )
 }
@@ -131,8 +132,8 @@ const Tooltip = ({orientation}: {orientation: string}) => {
         }
     }
     return <> 
-        <div className="relative p-4 z-2 bg-indigo-500/50 rounded-full">
-            Move Me
+        <div className="relative p-4 z-2 bg-indigo-500/50 rounded-full text-center">
+            Spin Me!
             <span className={`bg-indigo-500/50 min-w-4 min-h-4 rounded-full absolute -bottom-5 ${placeTooltip(orientation, '1')}`}></span>
             <span className={`bg-indigo-500/50 min-w-4 min-h-4 rounded-full absolute -bottom-8 ${placeTooltip(orientation, '5')}`}></span>
         </div>
