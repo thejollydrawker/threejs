@@ -1,10 +1,11 @@
+const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const Dotenv = require('dotenv-webpack');
 const deps = require("./package.json").dependencies;
 module.exports = (_, argv) => ({
   output: {
-    publicPath: "http://localhost:4207/",
+    path: path.resolve(__dirname, 'dist'),
   },
 
   resolve: {
