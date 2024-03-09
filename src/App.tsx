@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     ]
   },
   
-]);
+], {basename: '/threejs'});
 
 const App = () => (
   <div>
